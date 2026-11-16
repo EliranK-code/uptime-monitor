@@ -1,7 +1,9 @@
 from datetime import datetime
+from pathlib import Path
 
 import requests
 
+BASE_DIR = Path(__file__).parent
 TIMEOUT = 10
 
 
@@ -23,7 +25,7 @@ def check(url):
 
 
 def main():
-    for url in load_sites("sites.txt"):
+    for url in load_sites(BASE_DIR / "sites.txt"):
         status, code, elapsed = check(url)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(timestamp, status, code, elapsed, url)
