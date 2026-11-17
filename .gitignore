@@ -1,6 +1,4 @@
 results.log
 .venv/
 monitor.db
-echo "__pycache__/" >> .gitignore__pycache__/
-__pycache__/
 __pycache__/
