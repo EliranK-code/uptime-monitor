@@ -1,11 +1,14 @@
+import os
 import sqlite3
+import time                                                       
 from datetime import datetime
 from pathlib import Path
 
 import requests
 
+
 BASE_DIR = Path(__file__).parent
-DB_PATH = BASE_DIR / "monitor.db"
+DB_PATH = Path(os.environ.get("DB_PATH", BASE_DIR / "monitor.db"))
 TIMEOUT = 10
 
 
@@ -45,8 +48,7 @@ def check(url):
     status = "UP" if 200 <= code < 400 else "DOWN"
     return status, code, elapsed
 
-
-def main():
+def run_once():                                                     
     conn = sqlite3.connect(DB_PATH)
     init_db(conn)
 
@@ -58,6 +60,17 @@ def main():
 
     conn.commit()
     conn.close()
+
+
+def main():
+    interval = os.environ.get("CHECK_INTERVAL")
+    if interval is None:
+        run_once()
+        return
+
+    while True:
+        run_once()
+        time.sleep(int(interval))
 
 
 if __name__ == "__main__":
