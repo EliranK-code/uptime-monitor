@@ -2,3 +2,4 @@ results.log
 .venv/
 monitor.db
 __pycache__/
+.pytest_cache/
